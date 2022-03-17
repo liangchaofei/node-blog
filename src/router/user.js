@@ -1,3 +1,6 @@
+const { loginCheck } = require('../controller/user')
+const { SuccessModel, ErrorModel } = require('../model/resModel')
+
 const handleUserRouter = (req, res) => {
     const method = req.method;
     const url = req.url;
@@ -6,9 +9,14 @@ const handleUserRouter = (req, res) => {
 
     // 登录
     if(method === 'POST' && path === '/api/user/login'){
-        return {
-            msg: '登陆的接口'
+        const { username, password } = req.body;
+
+        const res = loginCheck(username, password)
+        if(res){
+            return new SuccessModel()
         }
+        return new ErrorModel('登陆失败')
+
     }
 
 }
