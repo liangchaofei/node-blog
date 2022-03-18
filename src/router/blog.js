@@ -22,14 +22,26 @@ const handleBlogRouter = (req, res) => {
     // 获取博客详情
     if(method === 'GET' && path === '/api/blog/detail'){
         
-        const detail = getDetail(id);
-        return new SuccessModel(detail)
+        // const detail = getDetail(id);
+        // return new SuccessModel(detail)
+        const result  = getDetail(id);
+        return getDetail.then(data => {
+            return new SuccessModel(data)
+        })
     }
 
     // 新建博客
     if(method === 'POST' && path === '/api/blog/new'){
-        const data = newBlog(req.body)
-        return new SuccessModel(data)
+        // const data = newBlog(req.body)
+        // return new SuccessModel(data)
+
+        // 假数据，待开发登陆时改成真实数据
+        const author = 'curry'
+        req.body.author = author;
+        const result = newBlog(req.body)
+        return result.then(data => {
+            return new SuccessModel(data)
+        })
     }
 
     // 更新博客

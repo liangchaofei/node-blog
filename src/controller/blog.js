@@ -14,19 +14,26 @@ const getList = (author, keyword) => {
 }
 
 const getDetail = id => {
-    return {
-        id: 1,
-        title: '标题',
-        content: '内容',
-        createTime: '2022-01-01',
-        author: 'curry'
-    }
+    let sql = `select * from blogs where id='${id}'`;
+    return exec(sql).then(rows => {
+        return rows[0];
+    })
 }
 
 const newBlog = (blogData = {}) => {
-    return {
-        id: 3,
-    }
+    const { title, content, author } = blogData;
+    const createTime = Data.now();
+
+    const sql = `
+        insert into blogs (title, content, author, createtime)
+        values ('${title}', '${content}', '${author}', '${createTime}');
+    `
+
+    return exec(sql).then(insertData => {
+        return {
+            id: insertData.insertId
+        }
+    })
 }
 
 const updateBlog = (id, blogData = {}) => {
