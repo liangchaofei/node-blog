@@ -22,7 +22,7 @@ const getDetail = id => {
 
 const newBlog = (blogData = {}) => {
     const { title, content, author } = blogData;
-    const createTime = Data.now();
+    const createTime = '2021-11-11';
 
     const sql = `
         insert into blogs (title, content, author, createtime)
@@ -37,11 +37,28 @@ const newBlog = (blogData = {}) => {
 }
 
 const updateBlog = (id, blogData = {}) => {
-    return true;
+    const { title, content } = blogData;
+    const sql = `
+        update blogs set title='${title}',content='${content}' where id =${id};
+    `
+    return exec(sql).then(updateData => {
+        if(updateData.affectedRows > 0){
+            return true;
+        }
+        return false;
+    })
 }
 
-const deleteBlog = id => {
-    return true;
+const deleteBlog = (id, author) => {
+    const sql = `
+        delete from blogs where id =${id} and author='${author}' ;
+    `
+    return exec(sql).then(deleteData => {
+        if(deleteData.affectedRows > 0){
+            return true;
+        }
+        return false;
+    })
 }
 module.exports = {
     getList,
