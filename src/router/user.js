@@ -1,4 +1,5 @@
 const { login } = require('../controller/user')
+const { set, get } = require('../db/redis')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 
 // 获取cookie过期时间
@@ -15,9 +16,8 @@ const handleUserRouter = (req, res) => {
 
 
     // 登录
-    if(method === 'GET' && path === '/api/user/login'){
-        // const { username, password } = req.body;
-        const { username, password } = req.query;
+    if(method === 'POST' && path === '/api/user/login'){
+        const { username, password } = req.body;
         const res = login(username, password)
         return res.then(data => {
             if(data.username){
@@ -25,7 +25,7 @@ const handleUserRouter = (req, res) => {
                 // res.setHeader('Set-Cookie', `username=${data.username}; path=/; httpOnly;expires=${getCookieExpires()}`)
                 req.session.username = data.username;
                 req.session.realname = data.realname;
-
+                // set(req.sessionId,req.session)
                 return new SuccessModel()
             }
             return new ErrorModel('登陆失败')
@@ -33,12 +33,12 @@ const handleUserRouter = (req, res) => {
     }
 
     // 登陆验证测试
-    if(method === 'GET' && req.path === '/api/user/login-test'){
-        if(req.session.username){
-            return Promise.resolve(new SuccessModel())
-        }
-        return Promise.resolve(new ErrorModel('尚未登陆'))
-    }
+    // if(method === 'GET' && req.path === '/api/user/login-test'){
+    //     if(req.session.username){
+    //         return Promise.resolve(new SuccessModel())
+    //     }
+    //     return Promise.resolve(new ErrorModel('尚未登陆'))
+    // }
 
 }
 
