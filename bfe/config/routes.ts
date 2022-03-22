@@ -49,6 +49,12 @@
     component: './TableList',
   },
   {
+    name: 'blog.list',
+    icon: 'table',
+    path: '/blog/list',
+    component: './Blog/List',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
